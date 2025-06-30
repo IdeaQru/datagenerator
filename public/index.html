@@ -3,24 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Generator - Node.js API</title>
+    <title>Data Nelayan - Node.js API</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="app">
         <header class="header">
-            <h1>Data  Generator</h1>
-            <p>Node.js - API</p>
+            <div class="header-left">
+                <h1>Data Nelayan</h1>
+                <p>Node.js - API</p>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <span class="welcome-text">Welcome, <span id="usernameDisplay">Admin</span></span>
+                    <button class="logout-button" onclick="logout()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16,17 21,12 16,7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        Logout
+                    </button>
+                </div>
+            </div>
         </header>
 
         <nav class="navigation">
             <button class="nav-button active" id="generatorBtn" onclick="showPage('generator')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
                 Generator
             </button>
             <button class="nav-button" id="tableBtn" onclick="showPage('table')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 2v20l3-3 3 3V2z"></path>
+                </svg>
                 Data Table (<span id="dataCount">0</span>)
             </button>
             <button class="nav-button" id="statsBtn" onclick="showPage('stats')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                </svg>
                 Statistics
             </button>
         </nav>
@@ -30,12 +54,15 @@
             <div id="generatorPage" class="page active">
                 <div class="generator-container">
                     <div class="generator-content">
-                        <h2>Generate Data Dummy</h2>
-                        <p>Generate data dummy melalui API dengan jumlah yang dapat disesuaikan</p>
+                        <div class="page-header">
+                            <h2>Generate Data Dummy</h2>
+                            <p>Generate data dummy melalui API dengan jumlah yang dapat disesuaikan</p>
+                        </div>
                         
                         <div class="input-group">
-                            <label for="dataCount">Jumlah Data:</label>
-                            <input type="number" id="dataCountInput" value="100" min="1" max="1000">
+                            <label for="dataCountInput">Jumlah Data:</label>
+                            <input type="number" id="dataCountInput" value="100" min="1" max="1000" placeholder="Masukkan jumlah data">
+                            <small class="input-help">Minimum: 1, Maximum: 1000</small>
                         </div>
 
                         <button class="generate-button" id="generateBtn" onclick="generateData()">
@@ -47,15 +74,36 @@
 
                         <div class="info-box">
                             <h3>Format Data API:</h3>
-                            <ul>
-                                <li><strong>ID:</strong> Auto increment unique identifier</li>
-                                <li><strong>Latitude:</strong> -11 sampai -5 (Indonesia range)</li>
-                                <li><strong>Longitude:</strong> 95 sampai 141 (Indonesia range)</li>
-                                <li><strong>Kadar Klorofil-a:</strong> 0.1 - 2.0</li>
-                                <li><strong>Suhu Permukaan:</strong> 20°C - 32°C</li>
-                                <li><strong>Kategori:</strong> Potensial, Tidak Potensial, Sangat Potensial</li>
-                                <li><strong>Created At:</strong> Timestamp pembuatan data</li>
-                            </ul>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <strong>ID:</strong>
+                                    <span>Auto increment unique identifier</span>
+                                </div>
+                                <div class="info-item">
+                                    <strong>Latitude:</strong>
+                                    <span>-11 sampai -5 (Indonesia range)</span>
+                                </div>
+                                <div class="info-item">
+                                    <strong>Longitude:</strong>
+                                    <span>95 sampai 141 (Indonesia range)</span>
+                                </div>
+                                <div class="info-item">
+                                    <strong>Kadar Klorofil-a:</strong>
+                                    <span>0.1 - 2.0</span>
+                                </div>
+                                <div class="info-item">
+                                    <strong>Suhu Permukaan:</strong>
+                                    <span>20°C - 32°C</span>
+                                </div>
+                                <div class="info-item">
+                                    <strong>Kategori:</strong>
+                                    <span>Potensial, Tidak Potensial, Sangat Potensial</span>
+                                </div>
+                                <div class="info-item">
+                                    <strong>Created At:</strong>
+                                    <span>Timestamp pembuatan data</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -65,7 +113,10 @@
             <div id="tablePage" class="page">
                 <div class="table-container">
                     <div class="table-header">
-                        <h2>Data Table</h2>
+                        <div class="table-title">
+                            <h2>Data Table</h2>
+                            <p>Kelola dan lihat data nelayan yang telah di-generate</p>
+                        </div>
                         <div class="table-controls">
                             <select id="itemsPerPage" onchange="changeItemsPerPage()">
                                 <option value="5">5 per page</option>
@@ -73,13 +124,35 @@
                                 <option value="25">25 per page</option>
                                 <option value="50">50 per page</option>
                             </select>
-                            <button class="control-button" onclick="exportData()">Export CSV</button>
-                            <button class="control-button danger" onclick="clearData()">Clear All</button>
+                            <button class="control-button" onclick="exportData()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7,10 12,15 17,10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                Export CSV
+                            </button>
+                            <button class="control-button danger" onclick="clearData()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="3,6 5,6 21,6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                </svg>
+                                Clear All
+                            </button>
                         </div>
                     </div>
 
-                    <div class="pagination-info" id="paginationInfo">
-                        Menampilkan 0 - 0 dari 0 data
+                    <div class="table-info">
+                        <div class="pagination-info" id="paginationInfo">
+                            Menampilkan 0 - 0 dari 0 data
+                        </div>
+                        <div class="search-box">
+                            <input type="text" id="searchInput" placeholder="Cari data..." onkeyup="searchData()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="M21 21l-4.35-4.35"></path>
+                            </svg>
+                        </div>
                     </div>
                     
                     <div class="loading-container" id="tableLoading" style="display: none;">
@@ -91,13 +164,48 @@
                         <table class="data-table" id="dataTable">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Latitude</th>
-                                    <th>Longitude</th>
-                                    <th>Klorofil-a</th>
-                                    <th>Suhu (°C)</th>
-                                    <th>Kategori</th>
-                                    <th>Created At</th>
+                                    <th onclick="sortTable(0)">
+                                        ID
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="6,9 12,15 18,9"></polyline>
+                                        </svg>
+                                    </th>
+                                    <th onclick="sortTable(1)">
+                                        Latitude
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="6,9 12,15 18,9"></polyline>
+                                        </svg>
+                                    </th>
+                                    <th onclick="sortTable(2)">
+                                        Longitude
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="6,9 12,15 18,9"></polyline>
+                                        </svg>
+                                    </th>
+                                    <th onclick="sortTable(3)">
+                                        Klorofil-a
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="6,9 12,15 18,9"></polyline>
+                                        </svg>
+                                    </th>
+                                    <th onclick="sortTable(4)">
+                                        Suhu (°C)
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="6,9 12,15 18,9"></polyline>
+                                        </svg>
+                                    </th>
+                                    <th onclick="sortTable(5)">
+                                        Kategori
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="6,9 12,15 18,9"></polyline>
+                                        </svg>
+                                    </th>
+                                    <th onclick="sortTable(6)">
+                                        Created At
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="6,9 12,15 18,9"></polyline>
+                                        </svg>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody id="tableBody">
@@ -111,9 +219,23 @@
                     </div>
 
                     <div class="empty-state" id="emptyState" style="display: none;">
+                        <div class="empty-icon">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14,2 14,8 20,8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10,9 9,9 8,9"></polyline>
+                            </svg>
+                        </div>
                         <h3>Belum Ada Data</h3>
                         <p>Klik tombol "Generator" untuk membuat data dummy terlebih dahulu.</p>
-                        <button onclick="showPage('generator')">Go to Generator</button>
+                        <button class="primary-button" onclick="showPage('generator')">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                            Go to Generator
+                        </button>
                     </div>
                 </div>
             </div>
@@ -121,13 +243,37 @@
             <!-- Statistics Page -->
             <div id="statsPage" class="page">
                 <div class="stats-container">
-                    <h2>Statistics</h2>
+                    <div class="page-header">
+                        <h2>Statistics</h2>
+                        <p>Analisis dan statistik data nelayan</p>
+                    </div>
+                    
                     <div class="stats-grid" id="statsGrid">
                         <!-- Stats will be loaded here -->
+                    </div>
+                    
+                    <div class="charts-container" id="chartsContainer">
+                        <!-- Charts will be loaded here -->
                     </div>
                 </div>
             </div>
         </main>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+            <div class="loading-content">
+                <div class="loading-spinner large"></div>
+                <p>Processing...</p>
+            </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div class="toast" id="toast" style="display: none;">
+            <div class="toast-content">
+                <span class="toast-message" id="toastMessage"></span>
+                <button class="toast-close" onclick="hideToast()">×</button>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>

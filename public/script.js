@@ -373,3 +373,28 @@ setInterval(async () => {
         console.error('Error auto-refreshing stats:', error);
     }
 }, 30000);
+// Check authentication on page load
+window.addEventListener('DOMContentLoaded', function() {
+    if (localStorage.getItem('isLoggedIn') !== 'true') {
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    // Optional: Display logged in user info
+    const username = localStorage.getItem('username');
+    if (username) {
+        console.log('Logged in as:', username);
+    }
+});
+
+// Add logout functionality
+function logout() {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('username');
+    localStorage.removeItem('loginTime');
+    window.location.href = 'login.html';
+}
+
+// Optional: Add logout button to your dashboard header
+// You can add this HTML to your dashboard header:
+// <button class="logout-button" onclick="logout()">Logout</button>
